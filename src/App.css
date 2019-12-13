@@ -1,0 +1,25 @@
+.time-container {
+  text-align: center;
+}
+.time-inner-container {
+  display: inline-block;
+}
+.time-digits {
+  font-size: 4em;
+}
+.time-text {
+  display: flex;
+  justify-content: space-around;
+  color: grey;
+}
+.btn {
+  background-color: #f44336;
+  color: white;
+  border-radius: 8px;
+  margin-right: 10px;
+  width: 100px;
+  height: 30px;
+}
+.center {
+  text-align: center;
+}
