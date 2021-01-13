@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 
-export default class App extends Component {
-  state = {
-    timems: 0,
-    interval: null
-  };
-  timeenms = ms => {
+const App = () => {
+  const [on, setOn] = useState(false);
+  const [timems, settimems] = useState(0);
+  const [interval, setinterval] = useState(null);
+  const timeenms = (ms) => {
     const msPerSecond = 1000;
     const msPerMinute = msPerSecond * 60;
     const msPerHour = msPerMinute * 60;
@@ -24,47 +23,49 @@ export default class App extends Component {
       String(seconds).padStart(2, "0")
     );
   };
-  start = () => {
-    if (this.state.interval) {
-      clearInterval(this.state.interval);
-      this.setState({ interval: 0 });
-    } else {
+  const start = () => {
+    if (interval) {
+      clearInterval(interval);
+      setinterval(0);
+      setOn(false);
+    } else setOn(true);
+  };
+  useEffect(() => {
+    if (on) {
       const interval = setInterval(() => {
-        this.setState({ timems: this.state.timems + 1000 });
+        settimems((timems) => timems + 1000);
       }, 1000);
-      this.setState({ interval });
+      setinterval(interval);
+      return () => clearInterval(interval);
     }
+  }, [on]);
+  const reset = () => {
+    clearInterval(interval);
+    settimems(0);
+    setinterval(null);
   };
-
-  reset = () => {
-    clearInterval(this.state.interval);
-    this.setState({
-      timems: 0,
-      interval: null
-    });
-  };
-  render() {
-    return (
-      <div className="time-container">
-        <div className="time-inner-container">
-          <div className="time-digits">{this.timeenms(this.state.timems)}</div>
-          <div className="time-text">
-            <div className="time-text-item">Hour</div>
-            <div className="time-text-item">Minute</div>
-            <div className="time-text-item">Second</div>
-          </div>
+  return (
+    <div className="time-container">
+      <div className="time-inner-container">
+        <div className="time-digits">{timeenms(timems)}</div>
+        <div className="time-text">
+          <div className="time-text-item">Hour</div>
+          <div className="time-text-item">Minute</div>
+          <div className="time-text-item">Second</div>
         </div>
-        <br />
-        <br />
-        <input
-          className="btn"
-          type="button"
-          value={this.state.interval ? "Pause" : "Start"}
-          onClick={this.start}
-        />
-
-        <input className="btn" type="button" value="Reset" onClick={this.reset}/>
       </div>
-    );
-  }
-}
+      <br />
+      <br />
+      <input
+        className="btn"
+        type="button"
+        value={interval ? "Pause" : "Start"}
+        onClick={start}
+      />
+
+      <input className="btn" type="button" value="Reset" onClick={reset} />
+    </div>
+  );
+};
+
+export default App;
