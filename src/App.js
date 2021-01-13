@@ -62,7 +62,6 @@ const App = () => {
         value={interval ? "Pause" : "Start"}
         onClick={start}
       />
-
       <input className="btn" type="button" value="Reset" onClick={reset} />
     </div>
   );
